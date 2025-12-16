@@ -1,7 +1,12 @@
 package com.awer.backend.controller;
 
+import com.awer.backend.dto.TaskRequestDto;
 import com.awer.backend.model.Task;
 import com.awer.backend.service.TaskService;
+import jakarta.validation.Valid;
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +28,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return ts.createTask(task);
+    public ResponseEntity<Task> createTask(@Valid @RequestBody TaskRequestDto taskRequestDto) {
+        Task savedTask = ts.createTask(taskRequestDto.getTitle(), taskRequestDto.getDescription());
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
     }
+
 }

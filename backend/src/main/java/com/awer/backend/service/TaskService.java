@@ -8,6 +8,6 @@ public interface TaskService {
 
     List<Task> getAllTasks();
 
-    Task createTask(Task tastk);
+    Task createTask(String title, String description);
 
 }

@@ -21,7 +21,11 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public Task createTask(Task task) {
+    public Task createTask(String title, String description) {
+        Task task = new Task();
+        task.setTitle(title);
+        task.setDescription(description);
         return tr.save(task);
     }
+
 }
