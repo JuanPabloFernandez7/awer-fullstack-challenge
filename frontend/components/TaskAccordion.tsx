@@ -1,4 +1,5 @@
 import React from 'react';
+import {Inbox} from 'lucide-react'
 
 interface Task {
     id: number;
@@ -19,10 +20,18 @@ export default function TaskAccordion({
                                           toggleAccordion,
                                           indexOffset,
                                       }: TaskAccordionProps) {
-    if (tasks.length === 0) return <p className="text-center py-5 text-muted">📭 No hay tareas aún</p>;
+    if (tasks.length === 0) {
+        return (
+            <div className="d-flex flex-column justify-content-center align-items-center py-5" style={{ minHeight: '200px' }}>
+                <Inbox size={64} className="text-muted mb-3" />
+                <p className="text-muted mb-0">No hay tareas aún</p>
+            </div>
+        );
+    }
+
 
     return (
-        <div className="accordion mb-4">
+        <div className="accordion mb-4" id="taskAccordion">
             {tasks.map((task, index) => (
                 <div className="accordion-item" key={task.id}>
                     <h2 className="accordion-header">
@@ -44,3 +53,5 @@ export default function TaskAccordion({
         </div>
     );
 }
+
+

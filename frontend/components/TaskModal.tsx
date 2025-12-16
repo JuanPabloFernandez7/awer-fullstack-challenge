@@ -1,4 +1,5 @@
 import React from 'react';
+import { Plus, Save } from 'lucide-react';
 
 interface TaskModalProps {
     show: boolean;
@@ -23,31 +24,31 @@ export default function TaskModal({
                                       onChangeDescription,
                                       onSubmit,
                                   }: TaskModalProps) {
-    if (!show) return null; // <--- No renderizar nada si show es false
+    if (!show) return null;
 
     return (
         <>
-            {/* Backdrop */}
             <div className="modal-backdrop fade show"></div>
-
-            {/* Modal */}
             <div
                 className="modal d-block"
                 tabIndex={-1}
-                onClick={onClose} // Clic afuera cierra
-                style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} // fondo semitransparente
+                onClick={onClose}
+                style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
             >
                 <div
                     className="modal-dialog modal-dialog-centered"
-                    onClick={(e) => e.stopPropagation()} // evita que clic dentro cierre
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <div className="modal-content">
                         <div className="modal-header bg-primary text-white">
-                            <h5 className="modal-title">✨ Nueva Tarea</h5>
+                            <h5 className="modal-title d-flex align-items-center gap-2">
+                                <Plus size={20} />
+                                Nueva Tarea
+                            </h5>
                             <button
                                 type="button"
                                 className="btn-close btn-close-white"
-                                onClick={onClose} // Cruz cierra
+                                onClick={onClose}
                             ></button>
                         </div>
                         <div className="modal-body">
@@ -60,7 +61,7 @@ export default function TaskModal({
                                     className={`form-control ${fieldErrors.title ? 'is-invalid' : ''}`}
                                     value={title}
                                     onChange={(e) => onChangeTitle(e.target.value)}
-                                    placeholder="Ej: Completar informe mensual"
+                                    placeholder="Ej: Entrar a Awer Reviews"
                                     disabled={submitting}
                                 />
                                 {fieldErrors.title && <div className="invalid-feedback">{fieldErrors.title}</div>}
@@ -74,7 +75,7 @@ export default function TaskModal({
                                     rows={4}
                                     value={description}
                                     onChange={(e) => onChangeDescription(e.target.value)}
-                                    placeholder="Describe los detalles de tu tarea..."
+                                    placeholder="Para entrar a Awer Reviews primero debo..."
                                     disabled={submitting}
                                 ></textarea>
                                 {fieldErrors.description && <div className="invalid-feedback">{fieldErrors.description}</div>}
@@ -84,28 +85,31 @@ export default function TaskModal({
                             <button
                                 type="button"
                                 className="btn btn-secondary"
-                                onClick={onClose} // Cancel cierra
+                                onClick={onClose}
                                 disabled={submitting}
                             >
                                 Cancelar
                             </button>
                             <button
                                 type="button"
-                                className="btn btn-primary"
+                                className="btn btn-primary d-flex align-items-center gap-2"
                                 onClick={onSubmit}
                                 disabled={submitting}
                             >
                                 {submitting ? (
                                     <>
-                                        <span
-                                            className="spinner-border spinner-border-sm me-2"
-                                            role="status"
-                                            aria-hidden="true"
-                                        ></span>
+                    <span
+                        className="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                    ></span>
                                         Guardando...
                                     </>
                                 ) : (
-                                    '💾 Guardar Tarea'
+                                    <>
+                                        <Save size={18} />
+                                        Guardar Tarea
+                                    </>
                                 )}
                             </button>
                         </div>

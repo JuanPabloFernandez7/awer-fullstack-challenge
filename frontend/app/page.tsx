@@ -8,18 +8,28 @@ import TaskAccordion from '../components/TaskAccordion';
 import Pagination from '../components/Pagination';
 import TaskModal from '../components/TaskModal';
 
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+}
+
+interface FieldErrors {
+  title?: string;
+  description?: string;
+}
 
 export default function TaskManager() {
-  const [tasks, setTasks] = useState([]);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(null);
-  const [fieldErrors, setFieldErrors] = useState({});
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const [expandedTask, setExpandedTask] = useState(null);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [expandedTask, setExpandedTask] = useState<number | null>(null);
   const tasksPerPage = 5;
 
   useEffect(() => {
@@ -32,8 +42,12 @@ export default function TaskManager() {
       setError(null);
       const data = await apiFetchTasks();
       setTasks(data);
-    } catch (err) {
-      setError(err.message);
+    } catch (err: any) {
+      if (err?.message === 'Load failed') {
+        setError('No se pudo conectar con el servidor');
+      } else {
+        setError(err?.message || 'Error al cargar las tareas');
+      }
     } finally {
       setLoading(false);
     }
@@ -51,7 +65,7 @@ export default function TaskManager() {
     setFieldErrors({});
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFieldErrors({});
     try {
@@ -61,18 +75,23 @@ export default function TaskManager() {
       setTasks([...tasks, newTask]);
       handleCloseModal();
       setCurrentPage(Math.ceil((tasks.length + 1) / tasksPerPage));
-    } catch (err) {
-      if (err.validationErrors) {
+    } catch (err: any) {
+      if (err?.validationErrors) {
         setFieldErrors(err.validationErrors);
       } else {
-        setError(err.message);
+        handleCloseModal();
+        if (err?.message === 'Load failed') {
+          setError('No se pudo conectar con el servidor');
+        } else {
+          setError(err?.message || 'Error inesperado');
+        }
       }
     } finally {
       setSubmitting(false);
     }
   };
 
-  const toggleAccordion = (taskId) => {
+  const toggleAccordion = (taskId: number) => {
     setExpandedTask(expandedTask === taskId ? null : taskId);
   };
 
@@ -80,14 +99,10 @@ export default function TaskManager() {
   const indexOfFirstTask = indexOfLastTask - tasksPerPage;
   const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
   const totalPages = Math.ceil(tasks.length / tasksPerPage);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
       <>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-        />
         <div className="bg-light min-vh-100 py-5">
           <div className="container" style={{ maxWidth: '900px' }}>
             <Header onNewTask={handleOpenModal} />

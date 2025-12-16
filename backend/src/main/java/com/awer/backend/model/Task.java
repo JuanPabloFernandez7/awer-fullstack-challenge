@@ -21,7 +21,8 @@ public class Task {
 
     public Task() {}
 
-    public Task(String description) {
+    public Task(String title, String description) {
+        this.title = title;
         this.description = description;
     }
 

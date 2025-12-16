@@ -4,7 +4,6 @@ import com.awer.backend.dto.TaskRequestDto;
 import com.awer.backend.model.Task;
 import com.awer.backend.service.TaskService;
 import jakarta.validation.Valid;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
