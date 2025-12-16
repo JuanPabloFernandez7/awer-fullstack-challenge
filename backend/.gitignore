@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Backend local config
+backend/src/main/resources/application.properties
+
+# IDE
+.idea/
+.DS_Store
