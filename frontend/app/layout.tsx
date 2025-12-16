@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Awer-Todo app",
+  title: "Awer-Todo",
   description: "Aplicacion para gestionar gestionar y agregar tareas",
     icons: {
         icon: '/icons/favicon.ico',
